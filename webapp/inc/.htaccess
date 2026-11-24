@@ -1,0 +1,4 @@
+# Belongs to the app, not to the browser.
+# On the server these are PHP so they never print source, and Apache
+# refuses to serve them at all. The local PHP dev server ignores this file.
+Require all denied

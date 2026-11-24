@@ -1,0 +1,8 @@
+# The database is generated on first run; never commit it.
+data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Server-only database credentials.
+src/config.local.php

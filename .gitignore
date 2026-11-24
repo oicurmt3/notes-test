@@ -1,0 +1,18 @@
+# Local databases (generated on first run)
+**/data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Server-only credentials, never committed
+**/inc/config.local.php
+
+# Secrets file for deploy scripts (lives in ~/.dsh, listed here as a guard)
+.env
+
+# UI test artifacts: screenshots, Chrome profiles
+.preview/
+
+# Editor / OS noise
+Thumbs.db
+*.log
