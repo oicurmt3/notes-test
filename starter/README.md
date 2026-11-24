@@ -9,7 +9,7 @@ the copy.
 ```
 Copy-Item -Recurse starter my-new-app
 cd my-new-app
-.\run.ps1                      # http://127.0.0.1:8000
+.\run.cmd                      # http://127.0.0.1:8000
 ```
 
 ## What's already done for you
@@ -22,7 +22,7 @@ cd my-new-app
 | `inc/db.php` | `db()` returns a PDO connection and creates the table on first run |
 | `inc/.htaccess` | Denies direct requests for the `inc/` folder |
 | `sql/schema.sql` | The MySQL table, for importing by hand |
-| `run.ps1` | Local server on port 8000 |
+| `run.cmd` | Local server on port 8000 |
 | `deploy.mjs` | Uploads this folder to `/home/perthrel/sandgroper.net/<folder>` and creates its database |
 | `data/` | Appears on first local run; holds the SQLite file, never uploaded |
 

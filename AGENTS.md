@@ -10,10 +10,11 @@
 ## Starting a new app
 
 ```
-Copy-Item -Recurse starter <name>
+.\new-app.cmd <name>
 ```
 
-Then build in the copy and deploy it. Don't deploy `starter/` itself.
+Creates `<name>/` from `starter/` after checking the name is URL-safe, then
+build in the copy and deploy it. Don't deploy `starter/` itself.
 
 ## Deploying `webapp/`
 
@@ -41,7 +42,7 @@ it into chat or a file in this workspace.
 - POST, then redirect — a refresh must not repeat the write.
 - Keep `inc/` out of reach (`.htaccess` denies it); never commit
   `config.local.php`.
-- Local dev uses SQLite (`run.ps1`); the server uses MySQL via
+- Local dev uses SQLite (`run.cmd`); the server uses MySQL via
   `inc/config.local.php`. Same code, different settings.
 
 ## Environment gotchas

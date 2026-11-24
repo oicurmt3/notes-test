@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * Deploy this app to cPanel over UAPI.
  *
@@ -33,7 +33,7 @@ const args = new Map(
 const APPLY = args.has("apply");
 const FORCE = args.has("force");
 const FOLDER = args.get("folder") ?? "notes";
-const DB_SHORT = args.get("db") ?? FOLDER;
+const DB_SHORT = (args.get("db") ?? FOLDER).replace(/[^A-Za-z0-9_]/g, "");
 const DOMAIN = args.get("domain") ?? "sandgroper.net";
 const DOCROOT = args.get("docroot") ?? `/home/perthrel/${DOMAIN}`;
 const TARGET_DIR = `${DOCROOT}/${FOLDER}`;
@@ -146,7 +146,7 @@ async function uploadFile(dir, filename, bytes) {
 
 async function removePaths(paths) {
   // This Fileman build has no trash_files, so unlink each file individually.
-  // (API 2 again — UAPI exposes no delete function here.)
+  // (API 2 again â€” UAPI exposes no delete function here.)
   for (const p of paths) {
     await api2("Fileman", "fileop", { op: "unlink", sourcefiles: p });
   }
@@ -160,7 +160,7 @@ async function removePaths(paths) {
 const SHIP = ["index.php", "assets/style.css", "inc/db.php", "inc/config.php", "inc/.htaccess"];
 
 // Files a previous flattened upload left in the app root. Their correct
-// copies now live in subfolders, so the strays must go — especially the
+// copies now live in subfolders, so the strays must go â€” especially the
 // root .htaccess, which denies the whole folder.
 const STALE_ROOT_FILES = [".htaccess", "config.local.php", "config.php", "db.php", "style.css"];
 
@@ -192,7 +192,7 @@ async function main() {
   console.log(`  database ${dbTaken ? "already exists" : "will be created"}`);
 
   if (exists && !FORCE) {
-    console.log("\n  Folder exists — stopping so nothing is overwritten.");
+    console.log("\n  Folder exists â€” stopping so nothing is overwritten.");
     console.log("  Re-run with --force to deploy into it anyway.\n");
     process.exitCode = 2;
     return;
@@ -286,7 +286,7 @@ return [
     try {
       await removePaths([`${TARGET_DIR}/${name}`]);
     } catch {
-      // Not present — nothing to do.
+      // Not present â€” nothing to do.
     }
   }
 
@@ -319,7 +319,7 @@ async function verify() {
   if (!ok) {
     const body = after.body.replace(/\s+/g, " ").slice(0, 300);
     console.log(`\n  page said: ${body}`);
-    console.log("\n  Uploaded, but the page did not work — check inc/config.local.php.\n");
+    console.log("\n  Uploaded, but the page did not work â€” check inc/config.local.php.\n");
     process.exitCode = 1;
     return;
   }

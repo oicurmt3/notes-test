@@ -5,8 +5,7 @@ computer, and the database (SQLite) is built into PHP.
 
 ## Run it
 
-Double-click `run.ps1` (or right-click → *Run with PowerShell*), then open
-<http://127.0.0.1:8000>.
+Double-click `run.cmd`, then open <http://127.0.0.1:8000>.
 
 The `data/` folder appears on first run and holds `app.sqlite` — that single
 file *is* your whole database. Delete it to start fresh.
@@ -23,7 +22,7 @@ file *is* your whole database. Delete it to start fresh.
 | `inc/.htaccess` | Tells Apache to refuse direct requests for this folder |
 | `sql/schema.sql` | The MySQL table, for importing by hand |
 | `data/` | Created automatically; holds the SQLite file (local only) |
-| `run.ps1` | Starts PHP's built-in web server |
+| `run.cmd` | Starts PHP's built-in web server |
 
 The layout is deliberately the same here and on the server: `index.php` sits in
 the folder the browser reaches, and `inc/` holds the code that shouldn't be
@@ -60,7 +59,7 @@ node deploy.mjs --apply --force
   database.
 
 The script creates the folder, uploads `index.php`, `assets/`, and `inc/` (never
-`data/`, `sql/`, `run.ps1`, or this README), creates the MariaDB database and
+`data/`, `sql/`, `run.cmd`, or this README), creates the MariaDB database and
 user, writes `inc/config.local.php` on the server only, then tests the live page
 by adding and deleting a note.
 
