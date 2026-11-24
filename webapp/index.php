@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 require __DIR__ . '/inc/db.php';
 
+$config = require __DIR__ . '/inc/config.php';
+$timezone = $config['timezone'] ?? 'UTC';
+
 // Every form submits back to this same page, then the browser is
 // redirected. That "POST then redirect" habit stops a page refresh
 // from adding the same note twice.
@@ -13,8 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = trim((string) ($_POST['body'] ?? ''));
         if ($body !== '') {
             $stmt = db()->prepare('INSERT INTO notes (body, created_at) VALUES (?, ?)');
-            // Stored the same way in SQLite and MySQL, so date() works in both.
-            $stmt->execute([$body, date('Y-m-d H:i:s')]);
+            // Always store UTC. The server's own clock and timezone no longer
+            // matter, which is why timestamps were appearing 3 hours off.
+            $stmt->execute([$body, gmdate('Y-m-d H:i:s')]);
         }
     } elseif ($action === 'delete') {
         $stmt = db()->prepare('DELETE FROM notes WHERE id = ?');
@@ -33,6 +37,19 @@ $notes = db()
 function e(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+/** Timestamps are stored in UTC; show them where the user lives. */
+function format_local(string $utc, string $timezone): string
+{
+    $when = new DateTimeImmutable($utc, new DateTimeZone('UTC'));
+    return $when->setTimezone(new DateTimeZone($timezone))->format('j M Y, H:i');
+}
+
+/** Machine-readable form for the <time> element. */
+function iso_utc(string $utc): string
+{
+    return str_replace(' ', 'T', $utc) . 'Z';
 }
 ?>
 <!doctype html>
@@ -72,8 +89,8 @@ function e(string $value): string
             <?php foreach ($notes as $note): ?>
                 <li>
                     <span class="body"><?= e($note['body']) ?></span>
-                    <time datetime="<?= e($note['created_at']) ?>">
-                        <?= e(date('j M Y, H:i', strtotime($note['created_at']))) ?>
+                    <time datetime="<?= e(iso_utc($note['created_at'])) ?>">
+                        <?= e(format_local($note['created_at'], $timezone)) ?>
                     </time>
                     <form method="post" class="delete">
                         <input type="hidden" name="action" value="delete">

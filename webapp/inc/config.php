@@ -16,6 +16,9 @@ $config = [
     'driver'      => 'sqlite',
     'sqlite_path' => __DIR__ . '/../data/app.sqlite',
 
+    // Timestamps are stored in UTC; this is how they are displayed.
+    'timezone'    => 'Australia/Perth',
+
     'mysql' => [
         'host'     => 'localhost',
         'port'     => 3306,
